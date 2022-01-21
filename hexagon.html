@@ -47,7 +47,14 @@
         <p>
             <canvas id="avatar" width="400" height="400"></canvas>
         </p>
-        <input type="file" id="rawfile">
+        <p>
+            <select id="type">
+                <option value="pentagon">pentagon</option>
+                <option value="hexagon" selected>hexagon</option>
+                <option value="octagon">octagon</option>
+            </select>
+            <input type="file" id="rawfile">
+        </p>
         <p>(Just click on the image to download, since phones don't have right click. Use Twitter web to upload so it stays transparent.)</p>
         <p><div class="fit-content"><h2 class="rainbow-text">cryptobros get dunked on</h2></div></p>
     </div>
@@ -57,10 +64,16 @@
     var canvas = document.getElementById('avatar');
     var context = canvas.getContext("2d");
     var download = document.getElementById('download');
+    var type = document.getElementById('type');
     var fileinput = document.getElementById('rawfile'); // input file
     var img = new Image();
-    var mask = new Image()
-    mask.src = 'hexagon.png';
+    var masks = new Array();
+    Object.values(type.options).forEach(opt => {
+        typename = opt.value;
+        console.log(typename);
+        masks[typename] = new Image();
+        masks[typename].src = typename+'.png';
+    });
 
     canvas.onclick = () => {
         download_image = canvas.toDataURL("image/png", 1.0).replace("image/png", "image/octet-stream");
@@ -70,22 +83,23 @@
         dl_link.click();
     }
 
+    var renderImage = () => {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(masks[type.value], 0, 0, 400, 400);
+        context.globalCompositeOperation = 'source-out';
+        var scale = ScaleImage(img.width, img.height, 400, 400, false);
+        context.drawImage(img, scale.targetleft, scale.targettop, scale.width, scale.height);
+    }
+
     fileinput.onchange = function(evt) {
         var files = evt.target.files; // FileList object
         var file = files[0];
-        console.log(file.name);
         if(file.type.match('image.*')) {
-            context.clearRect(0, 0, canvas.width, canvas.height);
             var reader = new FileReader();
             reader.onload = function(evt){
                 if( evt.target.readyState == FileReader.DONE) {
                     img.src = evt.target.result;
-                    img.onload = () => {
-                        context.drawImage(mask, 0, 0, 400, 400);
-                        context.globalCompositeOperation = 'source-out';
-                        var scale = ScaleImage(img.width, img.height, 400, 400, false);
-                        context.drawImage(img, scale.targetleft, scale.targettop, scale.width, scale.height);
-                    }
+                    img.onload = renderImage
                 }
             }
             // Read in the image file as a data URL.
@@ -94,6 +108,7 @@
             alert("not an image");
         }
     };
+    type.onchange = renderImage;
 
     // https://stackoverflow.com/a/14087607 CC BY-SA 3.0
     function ScaleImage(srcwidth, srcheight, targetwidth, targetheight, fLetterBox) {
