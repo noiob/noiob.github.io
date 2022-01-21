@@ -48,7 +48,7 @@
             <canvas id="avatar" width="400" height="400"></canvas>
         </p>
         <input type="file" id="rawfile">
-        <p><button id="download">right click + save</button></p>
+        <p>(Just click on the image to download, since phones don't have right click)</p>
         <p><div class="fit-content"><h2 class="rainbow-text">cryptobros get dunked on</h2></div></p>
     </div>
 </body>
@@ -62,8 +62,7 @@
     var mask = new Image()
     mask.src = 'hexagon.png';
 
-    // https://stackoverflow.com/a/8126887 CC BY-SA 3.0
-    download.onclick = () => {
+    canvas.onclick = () => {
         download_image = canvas.toDataURL("image/png", 1.0).replace("image/png", "image/octet-stream");
         var dl_link = document.createElement('a');
         dl_link.download = "my-image.png";
