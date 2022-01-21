@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Free pentagon avatars</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="pentagon avatar generator" />
+    <meta property="og:description" content="just right-click save it! it's free!" />
+    <meta property="og:image" content="og-image.png" />
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono" rel="stylesheet">
+    <style>
+        body {
+            background-color: #9d71fc;
+        }
+        h1 {
+            font-family: 'Ubuntu Mono', monospace;
+        }
+        h2 {
+            font-family: 'Ubuntu Mono', monospace;
+        }
+        .box {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 100px;
+            text-align: center;
+            padding: 10px;
+        }
+        .fit-content {
+            display: inline-block;
+            padding: 5px;
+        }
+        .rainbow-text {
+            font-family: 'Comic Sans Ms', 'Comic Sans', 'Comic Code', 'Chalkboard SE', sans-serif;
+            background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>pentagon avatar generator</h1>
+        <h2>just right-click save it! it's free!</h2>
+        <p>
+            <canvas id="avatar" width="400" height="400"></canvas>
+        </p>
+        <input type="file" id="rawfile">
+        <p>(Just click on the image to download, since phones don't have right click)</p>
+        <p><div class="fit-content"><h2 class="rainbow-text">cryptobros get dunked on</h2></div></p>
+    </div>
+</body>
+<script type="text/javascript">
+    // https://gist.github.com/felixzapata/3684117
+    var canvas = document.getElementById('avatar');
+    var context = canvas.getContext("2d");
+    var download = document.getElementById('download');
+    var fileinput = document.getElementById('rawfile'); // input file
+    var img = new Image();
+    var mask = new Image()
+    mask.src = 'pentagon.png';
+
+    canvas.onclick = () => {
+        download_image = canvas.toDataURL("image/png", 1.0).replace("image/png", "image/octet-stream");
+        var dl_link = document.createElement('a');
+        dl_link.download = "pent-avatar.png";
+        dl_link.href = download_image;
+        dl_link.click();
+    }
+
+    fileinput.onchange = function(evt) {
+        var files = evt.target.files; // FileList object
+        var file = files[0];
+        console.log(file.name);
+        if(file.type.match('image.*')) {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            var reader = new FileReader();
+            reader.onload = function(evt){
+                if( evt.target.readyState == FileReader.DONE) {
+                    img.src = evt.target.result;
+                    img.onload = () => {
+                        context.drawImage(mask, 0, 0, 400, 400);
+                        context.globalCompositeOperation = 'source-out';
+                        var scale = ScaleImage(img.width, img.height, 400, 400, false);
+                        context.drawImage(img, scale.targetleft, scale.targettop, scale.width, scale.height);
+                    }
+                }
+            }
+            // Read in the image file as a data URL.
+            reader.readAsDataURL(file);
+        } else {
+            alert("not an image");
+        }
+    };
+
+    // https://stackoverflow.com/a/14087607 CC BY-SA 3.0
+    function ScaleImage(srcwidth, srcheight, targetwidth, targetheight, fLetterBox) {
+        var result = { width: 0, height: 0, fScaleToTargetWidth: true };
+
+        if ((srcwidth <= 0) || (srcheight <= 0) || (targetwidth <= 0) || (targetheight <= 0)) {
+            return result;
+        }
+
+        // scale to the target width
+        var scaleX1 = targetwidth;
+        var scaleY1 = (srcheight * targetwidth) / srcwidth;
+
+        // scale to the target height
+        var scaleX2 = (srcwidth * targetheight) / srcheight;
+        var scaleY2 = targetheight;
+
+        // now figure out which one we should use
+        var fScaleOnWidth = (scaleX2 > targetwidth);
+        if (fScaleOnWidth) {
+            fScaleOnWidth = fLetterBox;
+        }
+        else {
+        fScaleOnWidth = !fLetterBox;
+        }
+
+        if (fScaleOnWidth) {
+            result.width = Math.floor(scaleX1);
+            result.height = Math.floor(scaleY1);
+            result.fScaleToTargetWidth = true;
+        }
+        else {
+            result.width = Math.floor(scaleX2);
+            result.height = Math.floor(scaleY2);
+            result.fScaleToTargetWidth = false;
+        }
+        result.targetleft = Math.floor((targetwidth - result.width) / 2);
+        result.targettop = Math.floor((targetheight - result.height) / 2);
+
+        return result;
+    }
+</script>
+</html>
