@@ -48,6 +48,7 @@
             <canvas id="avatar" width="400" height="400"></canvas>
         </p>
         <input type="file" id="rawfile">
+        <p><button id="download">right click + save</button></p>
         <p><div class="fit-content"><h2 class="rainbow-text">cryptobros get dunked on</h2></div></p>
     </div>
 </body>
@@ -55,10 +56,20 @@
     // https://gist.github.com/felixzapata/3684117
     var canvas = document.getElementById('avatar');
     var context = canvas.getContext("2d");
+    var download = document.getElementById('download');
     var fileinput = document.getElementById('rawfile'); // input file
     var img = new Image();
     var mask = new Image()
     mask.src = 'hexagon.png';
+
+    // https://stackoverflow.com/a/8126887 CC BY-SA 3.0
+    download.onclick = () => {
+        download_image = canvas.toDataURL("image/png", 1.0).replace("image/png", "image/octet-stream");
+        var dl_link = document.createElement('a');
+        dl_link.download = "my-image.png";
+        dl_link.href = download_image;
+        dl_link.click();
+    }
 
     fileinput.onchange = function(evt) {
         var files = evt.target.files; // FileList object
@@ -85,7 +96,7 @@
         }
     };
 
-    // https://stackoverflow.com/a/14087607
+    // https://stackoverflow.com/a/14087607 CC BY-SA 3.0
     function ScaleImage(srcwidth, srcheight, targetwidth, targetheight, fLetterBox) {
         var result = { width: 0, height: 0, fScaleToTargetWidth: true };
 
