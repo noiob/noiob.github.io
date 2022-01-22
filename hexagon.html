@@ -32,18 +32,46 @@
         .rainbow-text {
             font-family: 'Comic Sans Ms', 'Comic Sans', 'Comic Code', 'Chalkboard SE', sans-serif;
             background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
+	    background-size: 800% 800%;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             -webkit-text-fill-color: transparent;
+	    animation: rainbow 8s ease-in-out  infinite;
         }
+	
+	.wrapper {
+	    position: relative;
+	    border: 2px solid #D841C1;
+	    box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;
+	    max-width: 400px;
+	    margin: 0 auto;
+	}
+
+	#avatar {
+	    width: 100%;
+	}
+
+	@keyframes rainbow {
+	    0% {
+	        background-position: 0% 50%;
+	    }
+
+	    50% {
+	        background-position: 100% 25%;
+	    }
+
+	    100% {
+		background-position: 0% 50%;
+	     }
+	}
     </style>
 </head>
 <body>
     <div class="box">
         <h1>hexagonal avatar generator</h1>
         <h2>just right-click save it! it's free!</h2>
-        <p>
+        <p class="wrapper">
             <canvas id="avatar" width="400" height="400"></canvas>
         </p>
         <p>
@@ -55,7 +83,7 @@
             <input type="file" id="rawfile">
         </p>
         <p>(Just click on the image to download, since phones don't have right click. Use Twitter web to upload so it stays transparent.)</p>
-        <p><div class="fit-content"><h2 class="rainbow-text">cryptobros get dunked on</h2></div></p>
+	<p><div class="fit-content"><h2 class="rainbow-text">cryptobros get dunked on</h2></div></p>
     </div>
 </body>
 <script type="text/javascript">
