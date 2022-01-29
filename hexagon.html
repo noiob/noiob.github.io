@@ -7,10 +7,19 @@
     <meta property="og:title" content="hexagonal avatar generator" />
     <meta property="og:description" content="just right-click save it! it's free!" />
     <meta property="og:image" content="og-image.png" />
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono" rel="stylesheet">
     <style>
+        /* ubuntu-mono-regular - latin */
+        @font-face {
+            font-family: 'Ubuntu Mono';
+            font-style: normal;
+            font-weight: 400;
+            src: local(''),
+                url('./fonts/ubuntu-mono-v14-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+                url('./fonts/ubuntu-mono-v14-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+        }
         body {
             background-color: #9d71fc;
+            font-family: sans-serif;
         }
         h1 {
             font-family: 'Ubuntu Mono', monospace;
@@ -59,7 +68,7 @@
             </select>
             <input type="file" id="rawfile">
         </p>
-        <p>(Just click on the image to download, since phones don't have right click. Use Twitter web to upload so it stays transparent.)</p>
+        <p>(Just click on the image to download, since phones don't have right click. Use Twitter web to upload and don't resize it to make sure it stays transparent.)</p>
         <p><div class="fit-content"><h2 class="rainbow-text">cryptobros get dunked on</h2></div></p>
     </div>
 </body>
