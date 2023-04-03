@@ -16,3 +16,5 @@
                    `P         `-._ \          `-:\          `. `:\
                                    ""            "            `-._)
 ```
+
+[free hexagons!](hexagon.html)
